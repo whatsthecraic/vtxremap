@@ -304,10 +304,10 @@ static void save_edges(vector<WeightedEdge>& edges, const string& path_output, b
                 uint64_t chunk_sz = min(edges.size() - next_edge_id, buffer_sz);
                 uint64_t increment = is_weighted ? 3 : 2;
                 for(uint64_t i = 0, j = 0; i < chunk_sz; i++, j += increment){
-                    auto e = edges[next_edge_id];
+                    auto e = edges[next_edge_id +i];
                     input_buffer[j] = e.source();
                     input_buffer[j +1] = e.destination();
-                    if(is_weighted){ input_buffer[j +2] = *reinterpret_cast<uint64_t*>(&(e.m_weight)); }
+                    if(is_weighted){ reinterpret_cast<double*>(input_buffer)[j +2] = e.m_weight; }
                 }
                 next_edge_id += chunk_sz;
 

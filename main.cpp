@@ -88,6 +88,7 @@ static pair<uint64_t, vector<WeightedEdge>> parse_input(GraphalyticsReader& read
     uint64_t next_vertex_id = 0;
     WeightedEdge edge;
     while(reader.read_edge(edge.m_source, edge.m_destination, edge.m_weight)){
+
         auto v1 = vertices.insert(P{edge.m_source, next_vertex_id});
         if(v1.second){ next_vertex_id++; } // new vertex
         edge.m_source = v1.first->second;
@@ -97,7 +98,7 @@ static pair<uint64_t, vector<WeightedEdge>> parse_input(GraphalyticsReader& read
         edge.m_destination = v2.first->second;
 
         assert(edge.m_source != edge.m_destination && "Edge with the same source & destination is not allowed");
-        if(edge.m_source > edge.m_destination) std::swap(edge.m_source, edge.m_destination); // src < dst
+        if(!reader.is_directed() && edge.m_source > edge.m_destination) std::swap(edge.m_source, edge.m_destination); // src < dst
 
         result.second.push_back(edge);
     }
@@ -127,7 +128,7 @@ static void sort_edges(vector<WeightedEdge>& edges){
     Timer timer; timer.start();
 
     std::sort(edges.data(), edges.data() + edges.size(), [](const WeightedEdge& e1, const WeightedEdge& e2){
-        return (e1.m_source < e2.m_source) || (e1.m_source == e2.m_destination && e1.m_destination < e2.m_destination);
+        return (e1.m_source < e2.m_source) || (e1.m_source == e2.m_source && e1.m_destination < e2.m_destination);
     });
 
     timer.stop();

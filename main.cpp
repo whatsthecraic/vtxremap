@@ -118,7 +118,7 @@ static pair<uint64_t, vector<WeightedEdge>> parse_input(GraphalyticsReader& read
         result.second.push_back(edge);
     }
 
-    result.first = next_vertex_id; // number of edges created
+    result.first = next_vertex_id; // number of vertices created
 
     // Source for the BFS algorithm
     if(algorithms.bfs.m_enabled){
@@ -370,7 +370,7 @@ static void parse_command_line_arguments(int argc, char* argv[]){
     options.add_options()
             ("c, compress", "Compress the output vertices and edges with zlib")
             ("h, help", "Show this help menu")
-            ("s, sorted", "Respect the sorted order of the vertices in the mapping")
+            ("s, stable", "Respect the sorted order of the vertices in the mapping")
             ;
 
     auto parsed_args = options.parse(argc, argv);
@@ -390,7 +390,7 @@ static void parse_command_line_arguments(int argc, char* argv[]){
     g_path_input = argv[1];
     g_path_output = argv[2];
     g_compress_output = parsed_args.count("compress");
-    g_sorted_order_vertices = parsed_args.count("sorted");
+    g_sorted_order_vertices = parsed_args.count("stable");
 
     cout << "Path input graph: " << g_path_input << "\n";
     cout << "Path output log: " << g_path_output << "\n";
